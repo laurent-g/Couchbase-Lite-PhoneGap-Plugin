@@ -47,7 +47,7 @@ public class CBLite extends CordovaPlugin {
 	private void initCBLite() {
 		try {
 
-		    allowedCredentials = new Credentials();
+		    allowedCredentials = null; //new Credentials();
 
 			URLStreamHandlerFactory.registerSelfIgnoreError();
 
@@ -77,15 +77,24 @@ public class CBLite extends CordovaPlugin {
 					callback.error("Failed to initialize couchbase lite.  See console logs");
 					return false;
 				} else {
-					String callbackRespone = String.format(
-							"http://%s:%s@localhost:%d/",
-                            allowedCredentials.getLogin(),
-                            allowedCredentials.getPassword(),
-                            listenPort
-                    );
 
-					callback.success(callbackRespone);
+					if (allowedCredentials==null) {
+						String callbackRespone = String.format(
+								"http://%s:%s@localhost:%d/",
+	                            allowedCredentials.getLogin(),
+	                            allowedCredentials.getPassword(),
+	                            listenPort
+	                    );
 
+						callback.success(callbackRespone);
+					} else {
+						String callbackRespone2 = String.format(
+								"http://localhost:%d/",
+															listenPort
+											);
+
+						callback.success(callbackRespone2);
+					}
 					return true;
 				}
 
@@ -112,7 +121,7 @@ public class CBLite extends CordovaPlugin {
 			Manager.enableLogging(Log.TAG_REMOTE_REQUEST, Log.VERBOSE);
 			Manager.enableLogging(Log.TAG_ROUTER, Log.VERBOSE);
 			manager = new Manager(new AndroidContext(context), Manager.DEFAULT_OPTIONS);
-			
+
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
