@@ -78,7 +78,7 @@ public class CBLite extends CordovaPlugin {
 					return false;
 				} else {
 
-					if (allowedCredentials==null) {
+					if (allowedCredentials!=null) {
 						String callbackRespone = String.format(
 								"http://%s:%s@localhost:%d/",
 	                            allowedCredentials.getLogin(),
